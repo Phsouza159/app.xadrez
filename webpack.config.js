@@ -2,23 +2,26 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-    entry : {
-        filename: './web/TypeScript/main.ts'
-    } , 
-    output : {
-        path: path.resolve(__dirname , './web/assets/js/build/'),
+    entry: {
+        filename: path.resolve(__dirname, './web/TypeScript/main.js'),
+    },
+    devtool: 'inline-source-map',
+    output: {
+        path: path.resolve(__dirname, './web/assets/js/build/'),
         filename: 'main.build.js',
     },
-    module : {
+    resolve: {
+        extensions: ['.ts' , '.js' , '.json']
+    },
+    module: {
         rules: [
             {
                 test: /\.ts?$/,
                 exclude: /node_modules/,
-                loader:'ts-loader',
-               
+                loader: 'ts-loader',
             }
         ]
-    }
+    },
 }
 //loader: 'babel-loader',
 // query: {

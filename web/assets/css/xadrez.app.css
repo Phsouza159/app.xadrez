@@ -7,24 +7,41 @@ and open the template in the editor.
     Created on : 08/08/2019, 00:33:33
     Author     : paulo-pc
 */
-.app-xadrez {
-  background-color: red;
-}
 .app-xadrez ul {
   list-style: none;
+  background-image: linear-gradient(to right, #847f7f, #524d4d 100%);
+  max-width: 636px;
+  border: 15px solid #524d4d;
+  border-style: ridge;
+  border-right-color: #3e3939;
+  border-bottom-color: #3e3939;
+  border-radius: 56px;
+}
+.app-xadrez li {
+  max-width: 636px;
 }
 .app-xadrez .linha-area {
   background-color: blue;
 }
 .app-xadrez .linha-area .campo-linha {
   margin-left: -4px !important;
-  display: inline-table;
-  background-color: green;
+  display: table-cell;
+  background-color: #794734;
   height: 60px;
   width: 60px;
+  max-height: 60px;
+  max-width: 60px;
   text-align: center;
   padding: 5px;
-  border: 1px solid #000;
+  border: 1px solid #794734;
+  color: white;
+}
+.app-xadrez .linha-area .campo-linha .icon-peca {
+  font-size: 60px;
+  margin: 0px !important;
+  position: fixed;
+  margin-left: -30px !important;
+  margin-top: -15px !important;
 }
 .app-xadrez .linha-area .marcao-cabecalho-top {
   height: 20px !important;
@@ -34,9 +51,24 @@ and open the template in the editor.
 }
 .app-xadrez .linha-area .bg-white {
   background-color: white;
+  color: black;
 }
 .app-xadrez .linha-area .bg-tabuleiro {
-  background-color: black;
+  background-image: linear-gradient(to right, #ab7966 0, #794734 90%);
   color: white;
+}
+.app-xadrez .linha-area section:hover,
+.app-xadrez .linha-area .campo-select-hover:hover {
+  border: 1px solid #3477eca8;
+  box-shadow: 12px 12px 12px 12px #3477eca8;
+}
+.app-xadrez .item-ative {
+  background-image: linear-gradient(to right, #84c7ff 0, #3477eca8 90%) !important;
+}
+.app-xadrez .item-possivel-movimento {
+  background-image: linear-gradient(to right, #b6f9ff 0, #3477eca8 100%) !important;
+}
+.app-xadrez .bordar-tabuleiro {
+  padding: 15px;
 }
 /*# sourceMappingURL=xadrez.app.css.map */

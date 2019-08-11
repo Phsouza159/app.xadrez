@@ -5,6 +5,6 @@
 --%>
 
 <!-- TABULEIRO CABECALHO LATERAL -->
-<section class="campo-linha marcao-cabecalho-bottom">
+<section class="campo-linha " style="width: 20px; margin-top: -20px ">
     <%= request.getParameter("sentinela") %>
 </section>

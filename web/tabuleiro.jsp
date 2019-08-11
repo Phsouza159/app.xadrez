@@ -16,36 +16,41 @@
         <link rel="stylesheet" href="./assets/css/xadrez.app.css"/>
     </head>
     <body>
+        
         <section class="app-xadrez">
-            <ul >
-                <!-- TABULEIRO CABECALHO TOP -->
-                <jsp:include page="./WEB-INF/partialViews/tabuleiroReferenciaA.jsp" />
+            <ul class="bordar-tabuleiro" >
+                <%-- TABULEIRO CABECALHO TOP  --%>
+               <!-- <jsp:include page="./WEB-INF/partialViews/tabuleiroReferenciaA.jsp" />
+               
 
                 <!-- TABULEIRO -->
                 <%  for (int i = 0; i < xadrezApp._ROWS.length; i++) {  %>
 
                 <li class="linha-area">
 
-                    <!-- TABULEIRO CABECALHO LATERAL -->
+                    <%-- TABULEIRO CABECALHO LATERAL --%>
                     <jsp:include page="./WEB-INF/partialViews/tabuleiroReferenciaB.jsp">
                         <jsp:param name="sentinela" value="<%= xadrezApp._ROWS[i] %>" />
                     </jsp:include>
+                   
 
                     <!-- TABULEIRO CAMPO ITENS -->
                     <jsp:include page="./WEB-INF/partialViews/tabuleiroCampo.jsp">
                         <jsp:param name="sentinela" value="<%= i %>" />
                     </jsp:include>
                     
-                     <!-- TABULEIRO CABECALHO BAIXO -->
+                     <%-- TABULEIRO CABECALHO BAIXO --%>
                     <jsp:include page="./WEB-INF/partialViews/tabuleiroReferenciaB.jsp">
                         <jsp:param name="sentinela" value="<%= xadrezApp._ROWS[i] %>" />
                     </jsp:include>
+                     
                 </li>         
 
                 <% }%>
 
-                <!-- TABULEIRO CABECALHO BAIXO -->
+                <%-- TABULEIRO CABECALHO BAIXO  --%>
                 <jsp:include page="./WEB-INF/partialViews/tabuleiroReferenciaA.jsp" />
+                
             </ul>
             
         </section>

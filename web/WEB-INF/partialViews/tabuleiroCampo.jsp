@@ -31,8 +31,10 @@
 %>
 
 <!-- CAMPO -->
-<section class="campo-linha <%= classesInsert%>">
-    <%= classId%>
+<section onclick="AppXadrez.tabuleiro.itemSelect(this)" 
+         data-idcelula="<%= classId%>" 
+         class="campo-linha <%= classesInsert%> campo-select-hover">
+    <label class="icon-peca"></label>
 </section>
 
 <% }%>

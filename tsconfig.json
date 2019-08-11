@@ -1,10 +1,11 @@
 {
     "compilerOptions" : {
         "outDir" : "./web/assets/js/",
+        "sourceMap":true,
         "noImplicitAny":true,
-        "module": "es6",
-        "target": "es5",
+        "module": "ES6",
+        "target": "ES5",
         "jsx" : "react",
-        "allowJs":true
+        "allowJs":true,
     }
 }

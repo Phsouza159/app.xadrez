@@ -9,13 +9,26 @@ and open the template in the editor.
 */
 
 @altura-campo-area: 60px;
-@tabuleiro-campo-bg: black;
+@tabuleiro-campo-bg: #794734;
+@tabuleiro-largura:636px;
+@tabuleiro-boder-bg:#524d4d;
+@tabuleiro-item-select:#3477eca8;
 
 .app-xadrez {
-    background-color: red;
     
     & ul {
-      list-style: none;  
+      list-style: none;
+      background-image:linear-gradient(to right, @tabuleiro-boder-bg + 50%,@tabuleiro-boder-bg 100%);
+      max-width: @tabuleiro-largura;
+      border: 15px solid @tabuleiro-boder-bg;
+      border-style:ridge;
+      border-right-color: @tabuleiro-boder-bg - 20%;
+      border-bottom-color: @tabuleiro-boder-bg - 20%;
+      border-radius: 56px;
+    }
+    
+    & li {
+        max-width: @tabuleiro-largura;
     }
     
     & .linha-area {
@@ -23,13 +36,24 @@ and open the template in the editor.
        
        .campo-linha{
            margin-left: -4px !important;
-           display: inline-table;
-           background-color: green;
+           display: table-cell;
+           background-color: @tabuleiro-campo-bg;
            height: @altura-campo-area;
            width:  @altura-campo-area;
+           max-height: @altura-campo-area;
+           max-width:  @altura-campo-area;
            text-align:center;
            padding: 5px;
-           border: 1px solid #000;
+           border: 1px solid @tabuleiro-campo-bg;
+           color: white;
+           
+           & .icon-peca {
+                font-size: 60px;
+                margin: 0px !important;
+                position: fixed;
+                margin-left: -30px !important;
+                margin-top: -15px !important;
+           }
        }
        
        & .marcao-cabecalho-top {
@@ -42,11 +66,31 @@ and open the template in the editor.
        
        & .bg-white {
            background-color: white;
+           color: black
        }
        
        & .bg-tabuleiro {
-           background-color: @tabuleiro-campo-bg; 
+           //background-color: @tabuleiro-campo-bg; 
+           background-image:linear-gradient(to right, @tabuleiro-campo-bg + 50 0,@tabuleiro-campo-bg 90%);
            color:white;
        }
+       
+       & section:hover , .campo-select-hover:hover {
+           border: 1px solid #3477eca8;
+           box-shadow: 12px 12px 12px 12px #3477eca8; 
+       }
+    }
+    
+    & .item-ative {
+      background-image:linear-gradient(to right,  @tabuleiro-item-select + 80% 0, @tabuleiro-item-select  90%) !important;
+    }
+    
+    & .item-possivel-movimento {
+        background-image:linear-gradient(to right,  @tabuleiro-item-select + 130% 0, @tabuleiro-item-select  100%) !important;
+    }
+    
+    
+    & .bordar-tabuleiro {
+        padding: 15px; 
     }
 }
