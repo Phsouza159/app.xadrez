@@ -39,7 +39,7 @@ and open the template in the editor.
 .app-xadrez .linha-area .campo-linha .icon-peca {
   font-size: 60px;
   margin: 0px !important;
-  position: fixed;
+  position: absolute;
   margin-left: -30px !important;
   margin-top: -15px !important;
 }
@@ -51,22 +51,26 @@ and open the template in the editor.
 }
 .app-xadrez .linha-area .bg-white {
   background-color: white;
-  color: black;
 }
 .app-xadrez .linha-area .bg-tabuleiro {
   background-image: linear-gradient(to right, #ab7966 0, #794734 90%);
-  color: white;
 }
 .app-xadrez .linha-area section:hover,
 .app-xadrez .linha-area .campo-select-hover:hover {
   border: 1px solid #3477eca8;
   box-shadow: 12px 12px 12px 12px #3477eca8;
 }
+.app-xadrez .linha-area .text-white {
+  color: white !important;
+}
+.app-xadrez .linha-area .texxt-dark {
+  color: black;
+}
 .app-xadrez .item-ative {
   background-image: linear-gradient(to right, #84c7ff 0, #3477eca8 90%) !important;
 }
 .app-xadrez .item-possivel-movimento {
-  background-image: linear-gradient(to right, #b6f9ff 0, #3477eca8 100%) !important;
+  background-image: radial-gradient(#5c9fff 5%, #98dbff 15%, rgba(0, 0, 0, 0) 25%) !important;
 }
 .app-xadrez .bordar-tabuleiro {
   padding: 15px;

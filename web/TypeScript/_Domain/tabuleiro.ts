@@ -1,10 +1,12 @@
 import { TabuleiroItem } from "./tabuleiroItem";
 import { CelulasIdsValue, CelulasIds, CelulaId } from "../_ObjectValue/celulasTabuleiro";
-import { Peao } from "../_Pecas/Peao";
+import { DomElementServico } from "../_Service/DomElemntService";
+import { PecaBase } from "../_Pecas/PecaBase";
+import { Peao, Torre } from "../_Pecas/exportsPecas";
 
 
 export interface ITabuleiro {
-    itemSelectDOM: HTMLInputElement;
+    itemSelectDOM: HTMLElement;
     campos: TabuleiroItem[];
     nome: string;
     itemSelect(element: Element): void;
@@ -12,13 +14,14 @@ export interface ITabuleiro {
     RecuperarReferenciaReferencia(referencia: number): CelulaId;
 }
 
-
+/**
+ * App Xadrez - Class principal
+ */
 export class Tabuleiro implements ITabuleiro {
-
 
     private num_campos = 64;
 
-    itemSelectDOM: HTMLInputElement;
+    itemSelectDOM: HTMLElement;
     campos: TabuleiroItem[] = [];
     nome: string;
     CelulasIds: CelulasIds = CelulasIdsValue;
@@ -28,7 +31,12 @@ export class Tabuleiro implements ITabuleiro {
         this.carregarPeoes();
     }
 
-    carregarCamposr() {
+    //#region MANIPULACAO ITENS TABULEIRO
+
+    /**
+     * Allimentar campos do tabuleiro com TabuleiroItem
+     */
+    private carregarCamposr() : void {
         for (let i = 0; i < this.num_campos; i++) {
             let celulaDom = this.RecuperarReferenciaReferencia(i + 1);
 
@@ -36,60 +44,10 @@ export class Tabuleiro implements ITabuleiro {
         }
     }
 
-    private RemoverSelecaoItens(): void {
-        var elements = document.getElementsByClassName('item-ative');
-
-        for (let i = 0; i < elements.length; i++) {
-
-            let element: HTMLInputElement = <HTMLInputElement>elements.item(i);
-            let classAtributes = element.getAttribute('class');
-
-            element.setAttribute('class', classAtributes.replace(' item-ative', ''));
-        }
-    }
-
-
-    itemSelect(element: HTMLInputElement): void {
-
-        this.RemoverSelecaoItens();
-
-        let classAtributes = element.getAttribute('class');
-        classAtributes += ` item-ative`;
-
-        console.log(classAtributes);
-        element.setAttribute('class', classAtributes);
-
-        let idItemCelula = element.dataset.idcelula
-        let tabuleiroItem = this.RecuperaItemTabuleiro(idItemCelula);
-        
-        let camposMovimento = tabuleiroItem.GetPeca().verificarCamposMovimento(tabuleiroItem.GetCelulaDom());
-
-        this.itensMovimentos(camposMovimento);
-
-        this.itemSelectDOM = element;
-    }
-
-    private itensMovimentos(celulaIds:string[]) : void {
-        celulaIds.forEach( celula => {
-           let element = <HTMLInputElement>document.querySelectorAll(`[data-idcelula=\'${celula}\']`)[0];
-
-           this.SetClass(element , 'item-possivel-movimento');
-        });
-    }
-
-    private SetClass(element:HTMLInputElement , classe:string ) : void {
-        let classAtributes = element.getAttribute('class') + ` ${classe}`;
-
-        element.setAttribute('class' , classAtributes);
-    }
-
-    private RemoveClass(element:HTMLInputElement , classe:string) : void {
-        let classAtributes = element.getAttribute('class');
-
-        element.setAttribute('class' , classAtributes.replace(` ${classe} ` , ''));
-    }
-
-
+    /**
+     * Recuperar TabuleiroItem com base na celula ID
+     * @param celulaId 
+     */
     private RecuperaItemTabuleiro(celulaId:string) : TabuleiroItem {
         let celulaRefere = this.RecuperarReferenciaId(celulaId);
         
@@ -97,6 +55,10 @@ export class Tabuleiro implements ITabuleiro {
     
     }
 
+    /**
+     * Recuperar referencia de CelulaId com base no id passado
+     * @param celulaId 
+     */
     RecuperarReferenciaId(celulaId: string): CelulaId {
         try {
             return this.CelulasIds.celula.filter(e => e.id == celulaId)[0];
@@ -106,6 +68,10 @@ export class Tabuleiro implements ITabuleiro {
         }
     }
 
+    /**
+     * Recuperar referencia de CelulaId com base na referencia passada
+     * @param referencia 
+     */
     RecuperarReferenciaReferencia(referencia: number): CelulaId {
         try {
             return this.CelulasIds.celula.filter(e => e.referencia == referencia)[0];
@@ -115,10 +81,120 @@ export class Tabuleiro implements ITabuleiro {
         }
     }
 
+    //#endregion
+
+    //#region  MANIPULACAO DE ITEM PELO TABULEIRO
+
+    private RemoverSelecaoItens(): void {
+        // remover itens ativos
+        let elements = DomElementServico.GetByClass('item-ative');
+        DomElementServico.RemoveClassCollection(elements , 'item-ative')
+    
+        // removee possiveis moviemento
+        elements = DomElementServico.GetByClass('item-possivel-movimento');
+        DomElementServico.RemoveClassCollection(elements , 'item-possivel-movimento')
+    }
+
+    /**
+     * Recuperar TabuleiroItem referente ao elemento passado
+     * @param element 
+     * @throws Arrgumento invalid (data-idcelula) null
+     */
+    private RecuperarItemTabuleiroElement(element:HTMLElement) : TabuleiroItem{
+       
+        if( element.dataset.idcelula != null ){
+        
+            let idItemCelula = element.dataset.idcelula
+            return this.RecuperaItemTabuleiro(idItemCelula);
+        }
+
+        throw new Error("não foi possivel localizar dataset data-idcelula");
+    }
+
+
+    /**
+     * Ativar efeitos para o item selecionado no tabuleiro
+     * @param element 
+     */
+    itemSelect(element: HTMLElement): void {
+
+        if(DomElementServico.AnyClass(element , 'item-possivel-movimento')){
+
+            this.ExecultarMovimento(element);
+            return;
+        }
+
+        this.RemoverSelecaoItens();
+
+        //marcar item tabuleiro
+        DomElementServico.SetClass(element , 'item-ative');
+
+        let tabuleiroItem = this.RecuperarItemTabuleiroElement(element);
+        
+        // marcar possiveis movimentos
+        if(!tabuleiroItem.IsEmpyt()){
+
+            let camposMovimento = tabuleiroItem.GetPeca().verificarCamposMovimento(tabuleiroItem.GetCelulaDom());
+            this.itensMovimentos(camposMovimento);
+        }
+
+        this.itemSelectDOM = element;
+    }
+
+    /**
+     * Execultar movimento da peca
+     * @param element 
+     */
+    private ExecultarMovimento(element:HTMLElement) : void {
+        let casaAnterior = this.RecuperarItemTabuleiroElement(this.itemSelectDOM);
+        let casaNova = this.RecuperarItemTabuleiroElement(element);
+
+        if(!casaNova.IsEmpyt()){
+
+        }
+
+        casaNova.isAliado = casaAnterior.isAliado;
+        casaNova.SetPeca(casaAnterior.GetPeca());
+        casaAnterior.RemovePeca();
+
+        casaNova.SetDisplay();
+        casaAnterior.SetDisplay();
+
+        this.RemoverSelecaoItens();
+        this.itemSelectDOM = element;
+    }
+
+    /**
+     * Ativar efeito para possiveis movimento do item escolhido
+     * @param celulaIds 
+     */
+    private itensMovimentos(celulaIds:string[]) : void {
+        celulaIds.forEach( celula => {
+           let element = DomElementServico.GetSeletor(`[data-idcelula=\'${celula}\']`)[0];
+           
+           DomElementServico.SetClass(element , 'item-possivel-movimento');
+        });
+    }
+
+    
+    //#region  CARREGAR PECAS PELO TABULEIRO
+
     private carregarPeoes(): void {
         let item: TabuleiroItem = this.campos[26];
-
+        
+        item.isAliado = true;
         item.SetPeca(new Peao());
         item.SetDisplay();
+
+
+        let torre : TabuleiroItem = this.campos[35];
+
+        torre.isAliado = true;
+        torre.SetPeca(new Torre());
+        torre.SetDisplay();
+
+
     }
+
+    //#endregion
 }

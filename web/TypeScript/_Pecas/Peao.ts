@@ -25,5 +25,4 @@ export class Peao extends PecaBase {
     IsPossibilidadeCaptura(): number[] {
         throw new Error("Method not implemented.");
     }
-
 }

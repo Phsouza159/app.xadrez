@@ -50,7 +50,7 @@ and open the template in the editor.
            & .icon-peca {
                 font-size: 60px;
                 margin: 0px !important;
-                position: fixed;
+                position: absolute;
                 margin-left: -30px !important;
                 margin-top: -15px !important;
            }
@@ -66,18 +66,24 @@ and open the template in the editor.
        
        & .bg-white {
            background-color: white;
-           color: black
        }
        
        & .bg-tabuleiro {
            //background-color: @tabuleiro-campo-bg; 
            background-image:linear-gradient(to right, @tabuleiro-campo-bg + 50 0,@tabuleiro-campo-bg 90%);
-           color:white;
        }
        
        & section:hover , .campo-select-hover:hover {
            border: 1px solid #3477eca8;
            box-shadow: 12px 12px 12px 12px #3477eca8; 
+       }
+       
+       & .text-white {
+           color: white !important;
+       }
+       
+       & .texxt-dark {
+           color: black;
        }
     }
     
@@ -86,7 +92,7 @@ and open the template in the editor.
     }
     
     & .item-possivel-movimento {
-        background-image:linear-gradient(to right,  @tabuleiro-item-select + 130% 0, @tabuleiro-item-select  100%) !important;
+        background-image: radial-gradient((@tabuleiro-item-select + 40%) 5%, (@tabuleiro-item-select + 100%) 15%, rgba(0,0,0,.0) 25%) !important;
     }
     
     

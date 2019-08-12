@@ -1,4 +1,5 @@
 import { PecaBase } from "../_Pecas/PecaBase";
+import { DomElementServico } from "../_Service/DomElemntService";
 
 export interface ITabuleiroItem {
     isAliado:boolean;
@@ -6,14 +7,15 @@ export interface ITabuleiroItem {
     SetPeca(peca:PecaBase):void;
     GetPeca() : PecaBase;
     RemovePeca(): void;
-    movimentoPeca() :void;
+    movimentoPeca(element:HTMLElement) :void;
     IsEmpyt() : boolean;
     SetDisplay() : void;
     GetCelulaDom():string;
+    GetIdCelula():number;
 }
 
 export class TabuleiroItem implements ITabuleiroItem {
-    
+        
     private item:PecaBase;
     private isEmpyt:boolean;
     private celulaDom:string;
@@ -36,6 +38,10 @@ export class TabuleiroItem implements ITabuleiroItem {
         return this.celulaDom;
     }
 
+    GetIdCelula(): number {
+        return this.celulaId;
+    }
+
     SetPeca(peca:PecaBase) : void {
         this.item = peca;
         this.isEmpyt = false;
@@ -50,16 +56,26 @@ export class TabuleiroItem implements ITabuleiroItem {
         this.isEmpyt = true;
     }
 
-    movimentoPeca() :void {
-
+    movimentoPeca(element:HTMLElement) :void {
+        this.celulaDom = element.dataset.idcelula;
     }
 
     SetDisplay(): void {
-        var element = <HTMLInputElement>document.querySelectorAll(`[data-idcelula=\'${this.celulaDom}\']`)[0];
+        let imageDisplay:string;
 
+        if(this.item == null) {
+            imageDisplay = "";
+        }
+        else {
+            imageDisplay = this.item.image;
+        }
+
+        var element = DomElementServico.GetSeletor(`[data-idcelula=\'${this.celulaDom}\']`)[0];
         var pElement = <HTMLInputElement>element.children[0];
-        
-        pElement.innerHTML = this.item.image;
+        pElement.innerHTML = imageDisplay;
+
+        let textColor = this.isAliado ?  'texxt-dark' : 'text-white';
+        DomElementServico.SetClass(pElement , textColor);
         
         console.log(pElement);
     }
