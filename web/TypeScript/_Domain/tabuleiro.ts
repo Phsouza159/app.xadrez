@@ -2,7 +2,9 @@ import { TabuleiroItem } from "./tabuleiroItem";
 import { CelulasIdsValue, CelulasIds, CelulaId } from "../_ObjectValue/celulasTabuleiro";
 import { DomElementServico } from "../_Service/DomElemntService";
 import { PecaBase } from "../_Pecas/PecaBase";
-import { Peao, Torre } from "../_Pecas/exportsPecas";
+import { Peao, Torre, Rainha } from "../_Pecas/exportsPecas";
+import { CamposMovimento } from "./camposMovimento";
+import { Rei } from "../_Pecas/rei";
 
 
 export interface ITabuleiro {
@@ -135,10 +137,53 @@ export class Tabuleiro implements ITabuleiro {
         if(!tabuleiroItem.IsEmpyt()){
 
             let camposMovimento = tabuleiroItem.GetPeca().verificarCamposMovimento(tabuleiroItem.GetCelulaDom());
-            this.itensMovimentos(camposMovimento);
+            let camposValidos = this.ValidarCamposMovimento(camposMovimento);
+            
+            console.log(camposMovimento);
+
+            this.itensMovimentos(camposValidos);
         }
 
         this.itemSelectDOM = element;
+    }
+
+
+    private ValidarCamposMovimento(camposMovimento:CamposMovimento) : string[] {
+        let response:string[] = [];
+
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoYtop));
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoXLeft));
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoXRight));
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoYBottom));
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoWLeft));
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoWRight));
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoZLeft));
+        response.push(...this.VericarListasCamposMovimentoEixo(camposMovimento.movimentoZRight));
+
+        return response;
+    }
+
+    /**
+     * Validar possiveis campos 
+     * @param campos lista celulas tabuleiro
+     */
+    private VericarListasCamposMovimentoEixo(campos:string[]) : string[] {
+        let response:string[] = [];
+
+        for(let campo of campos){
+        
+            let itemTabuleiro = this.RecuperarReferenciaId(campo);
+            let tabuleiroItem = this.campos[itemTabuleiro.referencia - 1];
+        
+            if(tabuleiroItem.IsEmpyt() || !tabuleiroItem.isAliado){
+                response.push(campo);
+            }else {
+
+                break;
+            }
+        }
+
+        return response;
     }
 
     /**
@@ -186,6 +231,7 @@ export class Tabuleiro implements ITabuleiro {
         item.SetPeca(new Peao());
         item.SetDisplay();
 
+        this.campos[26] = item;
 
         let torre : TabuleiroItem = this.campos[35];
 
@@ -193,7 +239,23 @@ export class Tabuleiro implements ITabuleiro {
         torre.SetPeca(new Torre());
         torre.SetDisplay();
 
+        this.campos[35] = torre;
 
+        let rainha : TabuleiroItem = this.campos[28];
+
+        rainha.isAliado = true;
+        rainha.SetPeca(new Rainha());
+        rainha.SetDisplay();
+
+        this.campos[28] = rainha;
+
+        let rei : TabuleiroItem = this.campos[50];
+
+        rei.isAliado = true;
+        rei.SetPeca(new Rei());
+        rei.SetDisplay();
+
+        this.campos[50] = rei;
     }
 
     //#endregion

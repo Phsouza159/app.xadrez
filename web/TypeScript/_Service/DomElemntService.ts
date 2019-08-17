@@ -98,8 +98,9 @@ export class DomElementServico {
 
         element.setAttribute('class' , classAtributes);
     }
+    
     /**
-     * Remove uma classe css a um elemento DOM
+     * Remove uma classe css do elemento DOM
      * @param element elemento DOM
      * @param classe nome da classe css a ser adicionada
      */
